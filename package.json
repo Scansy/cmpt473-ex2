@@ -1,0 +1,11 @@
+{
+  "name": "csv-rfc4180-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "csvtojson": "2.0.14"
+  }
+}

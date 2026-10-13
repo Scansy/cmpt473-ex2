@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="csv2json">
+  <Parameters>
+    <Parameter id="1" name="RowCount" type="1">
+      <values>
+        <value>Zero</value>
+        <value>One</value>
+        <value>Multiple</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="2" name="RowSeparator" type="1">
+      <values>
+        <value>CRLF</value>
+        <value>CR</value>
+        <value>LF</value>
+        <value>None</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="3" name="FinalSeparator" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="Header" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="6" name="Quoting" type="1">
+      <values>
+        <value>AllQuoted</value>
+        <value>NotQuoted</value>
+        <value>Mixed</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="7" name="EmbeddedQuotes" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="8" name="EmbeddedCommas" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="9" name="EmbeddedLineBreaks" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="10" name="DoubleQuoteEscape" type="1">
+      <values>
+        <value>Correct</value>
+        <value>Incorrect</value>
+        <value>NA</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="12" name="ConsistentFieldCount" type="1">
+      <values>
+        <value>NA</value>
+        <value>Consistent</value>
+        <value>Inconsistent</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+  </Parameters>
+  <OutputParameters />
+  <Relations />
+  <Constraints>
+    <Constraint text="(EmbeddedQuotes = false) =&gt; (DoubleQuoteEscape = &quot;NA&quot;)">
+      <Parameters>
+        <Parameter name="EmbeddedQuotes" />
+        <Parameter name="DoubleQuoteEscape" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(EmbeddedQuotes = true) =&gt; (DoubleQuoteEscape != &quot;NA&quot;)">
+      <Parameters>
+        <Parameter name="EmbeddedQuotes" />
+        <Parameter name="DoubleQuoteEscape" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(RowCount = &quot;Zero&quot; &amp;&amp; Header = false) =&gt; (RowSeparator = &quot;None&quot;)">
+      <Parameters>
+        <Parameter name="RowCount" />
+        <Parameter name="RowSeparator" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(RowCount = &quot;Zero&quot; || (RowCount = &quot;One&quot; &amp;&amp; Header = false)) =&gt; (ConsistentFieldCount = &quot;NA&quot;)">
+      <Parameters>
+        <Parameter name="RowCount" />
+        <Parameter name="ConsistentFieldCount" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(RowCount = &quot;Zero&quot; &amp;&amp; Header = false) =&gt; (FinalSeparator = false &amp;&amp; EmbeddedQuotes = false &amp;&amp; EmbeddedCommas = false &amp;&amp; EmbeddedLineBreaks = false)">
+      <Parameters>
+        <Parameter name="RowCount" />
+        <Parameter name="Header" />
+        <Parameter name="FinalSeparator" />
+        <Parameter name="EmbeddedQuotes" />
+        <Parameter name="EmbeddedCommas" />
+        <Parameter name="EmbeddedLineBreaks" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(RowCount = &quot;Multiple&quot; || (RowCount = &quot;One&quot; &amp;&amp; Header = true))&#xA;=&gt; (ConsistentFieldCount != &quot;NA&quot;)">
+      <Parameters>
+        <Parameter name="RowCount" />
+        <Parameter name="RowCount" />
+        <Parameter name="Header" />
+        <Parameter name="ConsistentFieldCount" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(RowSeparator = &quot;None&quot;) =&gt; (FinalSeparator = false)">
+      <Parameters>
+        <Parameter name="RowSeparator" />
+        <Parameter name="FinalSeparator" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(RowCount = &quot;One&quot; &amp;&amp; Header = true) =&gt; (RowSeparator != &quot;None&quot;)&#xA;">
+      <Parameters>
+        <Parameter name="RowCount" />
+        <Parameter name="Header" />
+        <Parameter name="RowSeparator" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="(RowCount = &quot;Multiple&quot;) =&gt; (RowSeparator != &quot;None&quot;)">
+      <Parameters>
+        <Parameter name="RowCount" />
+        <Parameter name="RowSeparator" />
+      </Parameters>
+    </Constraint>
+  </Constraints>
+  <Testset doi="2">
+    <Testcase TCNo="0">
+      <Value>1</Value>
+      <Value>Zero</Value>
+      <Value>CRLF</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>NotQuoted</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>Incorrect</Value>
+      <Value>NA</Value>
+    </Testcase>
+    <Testcase TCNo="1">
+      <Value>2</Value>
+      <Value>One</Value>
+      <Value>CRLF</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>Mixed</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>NA</Value>
+      <Value>Consistent</Value>
+    </Testcase>
+    <Testcase TCNo="2">
+      <Value>3</Value>
+      <Value>Multiple</Value>
+      <Value>CRLF</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>AllQuoted</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>Correct</Value>
+      <Value>Inconsistent</Value>
+    </Testcase>
+    <Testcase TCNo="3">
+      <Value>4</Value>
+      <Value>Zero</Value>
+      <Value>CR</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>Mixed</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>Correct</Value>
+      <Value>NA</Value>
+    </Testcase>
+    <Testcase TCNo="4">
+      <Value>5</Value>
+      <Value>One</Value>
+      <Value>CR</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>AllQuoted</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>Incorrect</Value>
+      <Value>Consistent</Value>
+    </Testcase>
+    <Testcase TCNo="5">
+      <Value>6</Value>
+      <Value>Multiple</Value>
+      <Value>CR</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>NotQuoted</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>NA</Value>
+      <Value>Inconsistent</Value>
+    </Testcase>
+    <Testcase TCNo="6">
+      <Value>7</Value>
+      <Value>Zero</Value>
+      <Value>LF</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>AllQuoted</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>NA</Value>
+      <Value>NA</Value>
+    </Testcase>
+    <Testcase TCNo="7">
+      <Value>8</Value>
+      <Value>One</Value>
+      <Value>LF</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>NotQuoted</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>Correct</Value>
+      <Value>Consistent</Value>
+    </Testcase>
+    <Testcase TCNo="8">
+      <Value>9</Value>
+      <Value>Multiple</Value>
+      <Value>LF</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>Mixed</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>Incorrect</Value>
+      <Value>Inconsistent</Value>
+    </Testcase>
+    <Testcase TCNo="9">
+      <Value>10</Value>
+      <Value>Zero</Value>
+      <Value>None</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>AllQuoted</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>NA</Value>
+      <Value>NA</Value>
+    </Testcase>
+    <Testcase TCNo="10">
+      <Value>11</Value>
+      <Value>One</Value>
+      <Value>None</Value>
+      <Value>false</Value>
+      <Value>false</Value>
+      <Value>NotQuoted</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>Correct</Value>
+      <Value>NA</Value>
+    </Testcase>
+    <Testcase TCNo="11">
+      <Value>12</Value>
+      <Value>Zero</Value>
+      <Value>None</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>Mixed</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>Incorrect</Value>
+      <Value>NA</Value>
+    </Testcase>
+    <Testcase TCNo="12">
+      <Value>13</Value>
+      <Value>Multiple</Value>
+      <Value>CR</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>AllQuoted</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>Incorrect</Value>
+      <Value>Consistent</Value>
+    </Testcase>
+    <Testcase TCNo="13">
+      <Value>14</Value>
+      <Value>One</Value>
+      <Value>CRLF</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>Mixed</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>NA</Value>
+      <Value>Inconsistent</Value>
+    </Testcase>
+    <Testcase TCNo="14">
+      <Value>15</Value>
+      <Value>Multiple</Value>
+      <Value>LF</Value>
+      <Value>false</Value>
+      <Value>true</Value>
+      <Value>AllQuoted</Value>
+      <Value>true</Value>
+      <Value>true</Value>
+      <Value>false</Value>
+      <Value>Incorrect</Value>
+      <Value>Inconsistent</Value>
+    </Testcase>
+  </Testset>
+  <Header>
+    <Value />
+    <Value>ROWCOUNT</Value>
+    <Value>ROWSEPARATOR</Value>
+    <Value>FINALSEPARATOR</Value>
+    <Value>HEADER</Value>
+    <Value>QUOTING</Value>
+    <Value>EMBEDDEDQUOTES</Value>
+    <Value>EMBEDDEDCOMMAS</Value>
+    <Value>EMBEDDEDLINEBREAKS</Value>
+    <Value>DOUBLEQUOTEESCAPE</Value>
+    <Value>CONSISTENTFIELDCOUNT</Value>
+  </Header>
+  <Stat-Data>
+    <ExecutionTime>0.033</ExecutionTime>
+    <MaxDomainSize>4</MaxDomainSize>
+    <MinDomainSize>2</MinDomainSize>
+    <TotalNoOfCombination>292</TotalNoOfCombination>
+    <TotalNoOfTests>15</TotalNoOfTests>
+    <Algorithm>IPOG</Algorithm>
+  </Stat-Data>
+</System>
+

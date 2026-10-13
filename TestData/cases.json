@@ -1,0 +1,242 @@
+[
+  {
+    "id": "case01",
+    "partitions": {
+      "RowCount": "Zero",
+      "RowSeparator": "CRLF",
+      "FinalSeparator": false,
+      "Header": true,
+      "Quoting": "NotQuoted",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": false,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "Incorrect",
+      "ConsistentFieldCount": "NA"
+    },
+    "note": "Zero means zero data records; embedded quote is in the header."
+  },
+  {
+    "id": "case02",
+    "partitions": {
+      "RowCount": "One",
+      "RowSeparator": "CRLF",
+      "FinalSeparator": true,
+      "Header": true,
+      "Quoting": "Mixed",
+      "EmbeddedQuotes": false,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": true,
+      "DoubleQuoteEscape": "NA",
+      "ConsistentFieldCount": "Consistent"
+    },
+    "note": "One data record with a quoted comma and CRLF inside the notes field."
+  },
+  {
+    "id": "case03",
+    "partitions": {
+      "RowCount": "Multiple",
+      "RowSeparator": "CRLF",
+      "FinalSeparator": false,
+      "Header": false,
+      "Quoting": "AllQuoted",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": true,
+      "DoubleQuoteEscape": "Correct",
+      "ConsistentFieldCount": "Inconsistent"
+    },
+    "note": "Both records are quoted. Second record has an extra field."
+  },
+  {
+    "id": "case04",
+    "partitions": {
+      "RowCount": "Zero",
+      "RowSeparator": "CR",
+      "FinalSeparator": true,
+      "Header": true,
+      "Quoting": "Mixed",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": false,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "Correct",
+      "ConsistentFieldCount": "NA"
+    },
+    "note": "Embedded escaped quote is in the header. CR is a parser extension."
+  },
+  {
+    "id": "case05",
+    "partitions": {
+      "RowCount": "One",
+      "RowSeparator": "CR",
+      "FinalSeparator": false,
+      "Header": true,
+      "Quoting": "AllQuoted",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": false,
+      "EmbeddedLineBreaks": true,
+      "DoubleQuoteEscape": "Incorrect",
+      "ConsistentFieldCount": "Consistent"
+    },
+    "note": "Unescaped quotes in a quoted field; CR is a parser extension."
+  },
+  {
+    "id": "case06",
+    "partitions": {
+      "RowCount": "Multiple",
+      "RowSeparator": "CR",
+      "FinalSeparator": true,
+      "Header": false,
+      "Quoting": "NotQuoted",
+      "EmbeddedQuotes": false,
+      "EmbeddedCommas": false,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "NA",
+      "ConsistentFieldCount": "Inconsistent"
+    },
+    "note": "Unequal record widths; CR is a parser extension."
+  },
+  {
+    "id": "case07",
+    "partitions": {
+      "RowCount": "Zero",
+      "RowSeparator": "LF",
+      "FinalSeparator": false,
+      "Header": true,
+      "Quoting": "AllQuoted",
+      "EmbeddedQuotes": false,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": true,
+      "DoubleQuoteEscape": "NA",
+      "ConsistentFieldCount": "NA"
+    },
+    "note": "Embedded comma and LF are in the header. LF is a parser extension."
+  },
+  {
+    "id": "case08",
+    "partitions": {
+      "RowCount": "One",
+      "RowSeparator": "LF",
+      "FinalSeparator": true,
+      "Header": true,
+      "Quoting": "NotQuoted",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "Correct",
+      "ConsistentFieldCount": "Consistent"
+    },
+    "note": "Correct doubling alone does not make an unquoted quote legal. Unquoted comma creates an extra field; the intended consistent count cannot be represented."
+  },
+  {
+    "id": "case09",
+    "partitions": {
+      "RowCount": "Multiple",
+      "RowSeparator": "LF",
+      "FinalSeparator": false,
+      "Header": false,
+      "Quoting": "Mixed",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": false,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "Incorrect",
+      "ConsistentFieldCount": "Inconsistent"
+    },
+    "note": "Incorrect quoting and unequal record widths. LF is a parser extension."
+  },
+  {
+    "id": "case10",
+    "partitions": {
+      "RowCount": "Zero",
+      "RowSeparator": "None",
+      "FinalSeparator": false,
+      "Header": false,
+      "Quoting": "AllQuoted",
+      "EmbeddedQuotes": false,
+      "EmbeddedCommas": false,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "NA",
+      "ConsistentFieldCount": "NA"
+    },
+    "note": "Empty input has no fields, so AllQuoted has no observable meaning."
+  },
+  {
+    "id": "case11",
+    "partitions": {
+      "RowCount": "One",
+      "RowSeparator": "None",
+      "FinalSeparator": false,
+      "Header": false,
+      "Quoting": "NotQuoted",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": true,
+      "DoubleQuoteEscape": "Correct",
+      "ConsistentFieldCount": "NA"
+    },
+    "note": "One intended headerless record with no record separator. Unquoted comma and embedded CRLF make this malformed input split into extra fields/records. Doubled quotes are still illegal in an unquoted field."
+  },
+  {
+    "id": "case12",
+    "partitions": {
+      "RowCount": "Zero",
+      "RowSeparator": "None",
+      "FinalSeparator": false,
+      "Header": true,
+      "Quoting": "Mixed",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": true,
+      "DoubleQuoteEscape": "Incorrect",
+      "ConsistentFieldCount": "NA"
+    },
+    "note": "Only a header, with mixed quoting, an incorrectly escaped quote, comma and CRLF intended inside a header field. None means no separator between records; the embedded CRLF is field content."
+  },
+  {
+    "id": "case13",
+    "partitions": {
+      "RowCount": "Multiple",
+      "RowSeparator": "CR",
+      "FinalSeparator": true,
+      "Header": false,
+      "Quoting": "AllQuoted",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "Incorrect",
+      "ConsistentFieldCount": "Consistent"
+    },
+    "note": "Two intended records with two quoted fields each, a final CR, and an incorrectly escaped quote and comma in the first record. CR is a parser extension."
+  },
+  {
+    "id": "case14",
+    "partitions": {
+      "RowCount": "One",
+      "RowSeparator": "CRLF",
+      "FinalSeparator": true,
+      "Header": true,
+      "Quoting": "Mixed",
+      "EmbeddedQuotes": false,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": true,
+      "DoubleQuoteEscape": "NA",
+      "ConsistentFieldCount": "Inconsistent"
+    },
+    "note": "One data record with three fields against a two-field header. Quoted notes contain a comma and CRLF; the file ends with CRLF."
+  },
+  {
+    "id": "case15",
+    "partitions": {
+      "RowCount": "Multiple",
+      "RowSeparator": "LF",
+      "FinalSeparator": false,
+      "Header": true,
+      "Quoting": "AllQuoted",
+      "EmbeddedQuotes": true,
+      "EmbeddedCommas": true,
+      "EmbeddedLineBreaks": false,
+      "DoubleQuoteEscape": "Incorrect",
+      "ConsistentFieldCount": "Inconsistent"
+    },
+    "note": "Quoted header and two intended data records. First data record has an incorrectly escaped quote and embedded comma; second has an extra field. LF is a parser extension."
+  }
+]
