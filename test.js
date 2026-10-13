@@ -1,67 +1,72 @@
 const fs = require('fs');
 const path = require('path');
-const assert = require('assert');
 const csv = require('csvtojson');
-
-const dataDir = path.join(__dirname, 'TestData');
-const actualDir = path.join(__dirname, 'ActualResults');
 const cases = require('./TestData/cases.json');
 
-async function runTests() {
-  fs.mkdirSync(actualDir, { recursive: true });
-  let passed = 0;
+const dataDir = path.join(__dirname, 'TestData');
 
-  for (const test of cases) {
-    const id = test.id;
-    const expected = JSON.parse(fs.readFileSync(
-      path.join(dataDir, 'ExpectedOutput', id + '.json'), 'utf8'));
-    const expectedMessage = fs.readFileSync(
-      path.join(dataDir, 'ExpectedMessages', id + '.txt'), 'utf8').trim();
+const inputs = cases.map(testCase =>
+  fs.readFileSync(path.join(dataDir, 'TestFiles', testCase.id + '.csv'), 'utf8')
+);
 
-    let actual = null;
+const expectedOutputs = cases.map(testCase =>
+  JSON.parse(fs.readFileSync(
+    path.join(dataDir, 'ExpectedOutput', testCase.id + '.json'), 'utf8'))
+);
+
+const expectedMessages = cases.map(testCase =>
+  fs.readFileSync(
+    path.join(dataDir, 'ExpectedMessages', testCase.id + '.txt'), 'utf8').trim()
+);
+
+const actualDir = path.join(__dirname, 'ActualResults');
+fs.mkdirSync(actualDir, { recursive: true });
+
+cases.forEach((testCase, index) => {
+  describe(testCase.id, () => {
+    let output = null;
     let message = 'none';
-    let errorDetails = '';
 
-    try {
+    // arrange
+    beforeAll(async () => {
+      // set options for parser
       const options = {
-        noheader: !test.partitions.Header,
+        noheader: !testCase.header,
         checkColumn: true,
         trim: false,
         checkType: false,
         flatKeys: true
       };
-      // Give headerless files two JSON keys and a field count to check.
-      if (options.noheader) options.headers = ['field1', 'field2'];
-      actual = await csv(options).fromFile(
-        path.join(dataDir, 'TestFiles', id + '.csv'));
-    } catch (err) {
-      message = 'error';
-      errorDetails = String(err);
-    }
+      // for headerless inputs
+      if (options.noheader) {
+        options.headers = ['field1', 'field2'];
+      }
+      let errorDetails = '';
 
-    fs.writeFileSync(path.join(actualDir, id + '.json'),
-      JSON.stringify(actual, null, 2) + '\n');
-    fs.writeFileSync(path.join(actualDir, id + '.txt'), message + '\n');
-    fs.writeFileSync(path.join(actualDir, id + '.error.txt'), errorDetails);
+      // act
+      try {
+        output = await new Promise((resolve, reject) => {
+          csv(options).on('error', reject).fromString(inputs[index]).then(resolve, reject);
+        });
+      } catch (error) {
+        message = 'error';
+        errorDetails = String(error);
+      }
 
-    try {
-      assert.strictEqual(message, expectedMessage);
-      assert.deepStrictEqual(actual, expected);
-      console.log('PASS ' + id);
-      passed++;
-    } catch (err) {
-      console.log('FAIL ' + id);
-      console.log('  Expected: ' + expectedMessage + ' ' + JSON.stringify(expected));
-      console.log('  Actual:   ' + message + ' ' + JSON.stringify(actual));
-      if (errorDetails) console.log('  ' + errorDetails);
-    }
-  }
+      // write results into ActualResults/
+      fs.writeFileSync(path.join(actualDir, testCase.id + '.json'),
+        JSON.stringify(output, null, 2) + '\n');
+      fs.writeFileSync(path.join(actualDir, testCase.id + '.txt'), message + '\n');
+      fs.writeFileSync(path.join(actualDir, testCase.id + '.error.txt'), errorDetails);
+    });
 
-  console.log('\n' + passed + '/' + cases.length + ' tests passed');
-  if (passed !== cases.length) process.exitCode = 1;
-}
+    // assert
+    test('returns the expected output', () => {
+      expect(output).toEqual(expectedOutputs[index]);
+    });
 
-runTests().catch(err => {
-  console.error(err);
-  process.exitCode = 1;
+    test('returns the expected message', () => {
+      expect(message).toBe(expectedMessages[index]);
+    });
+  });
 });

@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node test.js"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "csvtojson": "2.0.14"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/test.js"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
   }
 }

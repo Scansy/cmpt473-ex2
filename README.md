@@ -1,10 +1,12 @@
 # CSV test suite
 
-Run `npm install`, then `npm test`. The runner imports `csvtojson`; the library repository is not cloned.
+Run `npm install`, then `npm test`. Jest runs the tests using `csvtojson`; the library repository is not cloned.
+
+`test.js` loads inputs, expected outputs, and expected messages into arrays in the order listed in `TestData/cases.json`. Each case has a Jest suite with separate output and message checks.
 
 There are exactly 15 cases, numbered like the revised plan. Each has an input in `TestData/TestFiles`, expected JSON in `TestData/ExpectedOutput`, and an expected message in `TestData/ExpectedMessages`. Actual results are saved in `ActualResults` for comparison. A failed case makes the runner exit with status 1.
 
-`TestData/cases.json` records the revised partitions and notes about the concrete inputs. RowCount counts data records, excluding the header. Zero-row cases put the requested field contents in the header. Case 11 has one intended headerless record; case 12 has only a header. Neither needs a separator between records. Embedded line breaks use CRLF in these two cases; `RowSeparator = None` refers to separators between records, not line breaks inside fields.
+`TestData/cases.json` lists each case ID and whether its input has a header. RowCount counts data records, excluding the header. Zero-row cases put the requested field contents in the header. Case 11 has one intended headerless record; case 12 has only a header. Neither needs a separator between records. Embedded line breaks use CRLF in these two cases; `RowSeparator = None` refers to separators between records, not line breaks inside fields.
 
 For malformed cases, RowCount and embedded characters describe the intended records and field contents. In cases 8 and 11, unquoted commas become extra field separators; the unquoted line break in case 11 creates an extra physical record. These are rejection tests, since those characters cannot actually belong to an unquoted CSV field. Case 10 is empty, so its AllQuoted partition has no observable effect.
 
